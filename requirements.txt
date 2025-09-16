@@ -1,0 +1,60 @@
+# MPRNet - Dépendances Python
+# ================================
+# Ce fichier contient les dépendances pour l'exécution LOCALE du projet
+# Pour Kaggle, voir la section "Exécution sur Kaggle" dans how_to_install.txt
+
+# ================================
+# DÉPENDANCES POUR EXÉCUTION LOCALE
+# ================================
+
+# PyTorch et dépendances principales
+torch>=1.12.0
+torchvision>=0.13.0
+torchaudio>=0.12.0
+
+# Traitement d'images et vision par ordinateur
+opencv-python>=4.6.0
+Pillow>=9.0.0
+scikit-image>=0.19.0
+
+# Calcul scientifique et manipulation de données
+numpy>=1.21.0
+scipy>=1.8.0
+
+# Configuration et utilitaires
+PyYAML>=6.0
+tqdm>=4.64.0
+
+# Jupyter Notebook (pour l'exécution du notebook)
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Visualisation et graphiques
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Utilitaires système
+psutil>=5.9.0
+
+# ================================
+# DÉPENDANCES OPTIONNELLES POUR GPU
+# ================================
+
+# Pour GPU NVIDIA avec CUDA 11.6 (décommentez si nécessaire)
+# torch>=1.12.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+# torchvision>=0.13.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+# torchaudio>=0.12.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+
+# Pour GPU NVIDIA avec CUDA 11.8 (décommentez si nécessaire)
+# torch>=1.12.0+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+# torchvision>=0.13.0+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+# torchaudio>=0.12.0+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ================================
+# NOTES IMPORTANTES
+# ================================
+
+# 1. Pour l'exécution sur Kaggle, les dépendances sont automatiquement gérées
+# 2. Les datasets doivent être téléchargés séparément (voir how_to_install.txt)
+# 3. Le warmup scheduler est inclus dans le projet (pytorch-gradual-warmup-lr/)
+# 4. Les métriques PSNR/SSIM sont incluses dans scikit-image

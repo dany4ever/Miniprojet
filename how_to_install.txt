@@ -1,0 +1,308 @@
+# MPRNet - Guide d'Installation et d'Exécution
+# ==============================================
+
+## CHOIX D'EXÉCUTION
+
+Ce projet peut être exécuté de deux façons :
+1. **EXÉCUTION LOCALE** : Sur votre machine personnelle
+2. ** OPTIMISATION SUR KAGGLE** : Pour l'entraînement avec GPU gratuit(Optimisation d une partie de code origine (deblurring))
+
+---
+
+#  PARTIE 1 : EXÉCUTION LOCALE
+
+- Telecharger le code  source de l article :https://github.com/swz30/MPRNet.git
+
+##  Prérequis Système
+
+### Système d'exploitation supporté
+- Windows 10/11
+- macOS 10.15+ (Catalina ou plus récent)
+- Linux (Ubuntu 18.04+, CentOS 7+, etc.)
+
+### Matériel recommandé
+- **CPU**: Processeur multi-cœurs (Intel i5/AMD Ryzen 5 ou mieux)
+- **RAM**: 16 GB minimum (32 GB recommandé)
+- **GPU**: NVIDIA GPU avec CUDA (optionnel mais fortement recommandé)
+- **Espace disque**: 20 GB minimum pour les datasets et modèles
+
+##  Installation de Python
+
+### Option 1: Anaconda (Recommandé)
+```bash
+# Télécharger Anaconda depuis https://www.anaconda.com/products/distribution
+# Installer avec l'interface graphique ou via ligne de commande
+
+# Créer un environnement virtuel
+conda create -n mprnet python=3.9
+conda activate mprnet
+```
+
+### Option 2: Python standard
+```bash
+# Installer Python 3.9+ depuis https://www.python.org/downloads/
+# Vérifier l'installation
+python --version
+pip --version
+
+# Créer un environnement virtuel
+python -m venv mprnet_env
+# Windows
+mprnet_env\Scripts\activate
+# macOS/Linux
+source mprnet_env/bin/activate
+```
+
+##  Installation des Dépendances
+
+### Installation automatique (Recommandée)
+```bash
+# Naviguer vers le dossier du projet
+cd /Users/hicham/Downloads/miniprojet
+
+# Installer toutes les dépendances
+pip install -r requirements.txt
+```
+
+### Installation manuelle
+```bash
+# PyTorch (choisir selon votre configuration)
+# Pour CPU uniquement
+pip install torch torchvision torchaudio
+
+# Pour GPU NVIDIA avec CUDA 11.6
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu116
+
+# Pour GPU NVIDIA avec CUDA 11.8
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Autres dépendances
+pip install opencv-python Pillow scikit-image numpy scipy PyYAML tqdm jupyter matplotlib seaborn psutil
+```
+
+##  Configuration GPU (Optionnel)
+
+### Vérifier la disponibilité CUDA
+```python
+import torch
+print(f"CUDA disponible: {torch.cuda.is_available()}")
+print(f"Nombre de GPU: {torch.cuda.device_count()}")
+if torch.cuda.is_available():
+    print(f"GPU actuel: {torch.cuda.get_device_name(0)}")
+```
+
+### Pour macOS avec GPU Apple Silicon
+```bash
+# PyTorch avec support MPS (Metal Performance Shaders)
+pip install torch torchvision torchaudio
+```
+
+## 📁 Préparation des Datasets
+
+### Structure des dossiers requise
+```
+miniprojet/
+├── mini-projet.ipynb
+├── requirements.txt
+├── how_to_install.txt
+├── MPRNet-main/
+│   ├── Deblurring/
+│   │   └── Datasets/
+│   │       ├── GoPro/
+│   │       │   ├── train/
+│   │       │   │   ├── input/
+│   │       │   │   └── target/
+│   │       │   └── test/
+│   │       │       ├── input/
+│   │       │       └── target/
+│   │       ├── HIDE/
+│   │       │   └── test/
+│   │       ├── RealBlur_J/
+│   │       │   └── test/
+│   │       └── RealBlur_R/
+│   │           └── test/
+│   ├── Denoising/
+│   │   └── Datasets/
+│   │       ├── SIDD/
+│   │       │   ├── train/
+│   │       │   └── val/
+│   │       └── DND/
+│   │           └── test/
+│   └── Deraining/
+│       └── Datasets/
+│           └── Synthetic_Rain_Datasets/
+│               ├── train/
+│               └── test/
+│                   ├── Test100/
+│                   ├── Rain100H/
+│                   ├── Rain100L/
+│                   ├── Test1200/
+│                   └── Test2800/
+```
+
+### Liens de Téléchargement des Datasets
+
+#### 1. **GoPro Dataset** (Deblurring)
+- **Train**: https://drive.google.com/drive/folders/1AsgIP9_X0bg0olu2-1N6karm2x15cJWE?usp=sharing
+- **Test**: https://drive.google.com/drive/folders/1a2qKfXWpNuTGOm2-Jex8kfNSzYJLbqkf?usp=sharing
+- **Extraire dans**: `MPRNet-main/Deblurring/Datasets/GoPro/`
+
+#### 2. **HIDE Dataset** (Deblurring)
+- **Test**: https://drive.google.com/drive/folders/1nRsTXj4iTUkTvBhTcGg8cySK8nd3vlhK?usp=sharing
+- **Extraire dans**: `MPRNet-main/Deblurring/Datasets/HIDE/test/`
+
+#### 3. **RealBlur-J Dataset** (Deblurring)
+- **Test**: https://drive.google.com/drive/folders/1KYtzeKCiDRX9DSvC-upHrCqvC4sPAiJ1?usp=sharing
+- **Extraire dans**: `MPRNet-main/Deblurring/Datasets/RealBlur_J/test/`
+
+#### 4. **RealBlur-R Dataset** (Deblurring)
+- **Test**: https://drive.google.com/drive/folders/1EwDoajf5nStPIAcU4s9rdc8SPzfm3tW1?usp=sharing
+- **Extraire dans**: `MPRNet-main/Deblurring/Datasets/RealBlur_R/test/`
+
+#### 5. **SIDD Dataset** (Denoising)
+- **Train**: https://www.eecs.yorku.ca/~kamel/sidd/dataset.php
+- **Val**: https://drive.google.com/drive/folders/1S44fHXaVxAYW3KLNxK41NYCnyX9S79su?usp=sharing
+- **Test**: https://www.eecs.yorku.ca/~kamel/sidd/benchmark.php
+- **Extraire dans**: `MPRNet-main/Denoising/Datasets/SIDD/`
+
+#### 6. **DND Dataset** (Denoising)
+- **Test**: https://noise.visinf.tu-darmstadt.de/downloads/
+- **Extraire dans**: `MPRNet-main/Denoising/Datasets/DND/test/`
+
+#### 7. **Synthetic Rain Datasets** (Deraining)
+- **Train**: https://drive.google.com/drive/folders/1Hnnlc5kI0v9_BtfMytC2LR5VpLAFZtVe?usp=sharing
+- **Test**: https://drive.google.com/drive/folders/1PDWggNh8ylevFmrjo-JEvlmqsDlWWvZs?usp=sharing
+- **Extraire dans**: `MPRNet-main/Deraining/Datasets/Synthetic_Rain_Datasets/`
+
+###  Modèles Pré-entraînés
+
+#### Modèles MPRNet Pré-entraînés
+- **Deblurring**: https://drive.google.com/file/d/1QwQUVbk6YVOJViCsOKYNykCsdJSVGRtb/view?usp=sharing
+- **Denoising**: https://drive.google.com/file/d/1LODPt9kYmxwU98g96UrRA0_Eh5HYcsRw/view?usp=sharing
+- **Deraining**: https://drive.google.com/file/d/1O3WEJbcat7eTY6doXWeorAbQ1l_WmMnM/view?usp=sharing
+
+##  Exécution du Code Local
+
+### Option 1: Jupyter Notebook (Recommandé)
+```bash
+# Démarrer Jupyter
+jupyter notebook
+
+# Ouvrir le fichier mini-projet.ipynb
+# Exécuter toutes les cellules (Cell > Run All)
+```
+
+### Option 2: Script Python
+```bash
+# Convertir le notebook en script Python
+jupyter nbconvert --to script mini-projet.ipynb
+
+# Exécuter le script
+python mini-projet.py
+```
+
+### Option 3: Exécution par modules
+```bash
+# Pour le déblurrage
+cd MPRNet-main/Deblurring
+python train.py
+
+# Pour le débruitage
+cd MPRNet-main/Denoising
+python train.py
+
+# Pour la suppression de pluie
+cd MPRNet-main/Deraining
+python train.py
+```
+
+---
+
+# ☁️ PARTIE 2 : OPTIMISATION SUR KAGGLE
+
+## Avantages de Kaggle
+- **GPU gratuit** : Tesla T4, P100, V100
+- **Environnement pré-configuré** : PyTorch, OpenCV, etc.
+- **Datasets intégrés** : Accès facile aux datasets populaires
+- **Temps d'exécution** : 9h par session (30h/semaine)
+
+## 📝 Préparation pour Kaggle
+
+### 1. Créer un compte Kaggle
+- Aller sur https://www.kaggle.com/
+- Créer un compte et vérifier l'email
+- Accepter les conditions d'utilisation
+
+### 2. Activer les GPU
+- Aller dans Settings > Accelerator
+- Sélectionner "GPU T4 x2" ou "GPU P100" (selon disponibilité)
+- **Important** : Les GPU sont limités à 30h/semaine
+
+### 3. Créer un nouveau Notebook
+- Cliquer sur "New Notebook"
+- Choisir "Notebook" (pas "Script")
+- Sélectionner "Python" comme langage
+
+## 📁 Upload des Fichiers sur Kaggle
+
+### Méthode 1: Upload direct
+1. Cliquer sur "Add Data" dans votre notebook
+2. Sélectionner "Upload" 
+3. Uploader les fichiers suivants :
+   - `mini-projet.ipynb`
+   - `MPRNet-main/` (dossier complet)
+   - `requirements.txt` (optionnel)
+
+### Méthode 2: Via Kaggle Datasets
+1. Créer un nouveau dataset sur Kaggle
+2. Uploader tous les fichiers du projet
+3. Ajouter le dataset à votre notebook
+
+## 🔗 Datasets Kaggle Recommandés
+
+### Datasets MPRNet disponibles sur Kaggle
+Rechercher et ajouter ces datasets à votre notebook :
+
+1. **GoPro Dataset** :
+   - Rechercher "GoPro deblurring dataset"
+   - Ajouter le dataset officiel
+
+
+### Configuration des chemins pour Kaggle
+```python
+# Dans le notebook Kaggle, modifier les chemins :
+train_dir = '/kaggle/input/gopro-training'  # Chemin Kaggle
+val_dir = '/kaggle/input/gopro-training'    # Chemin Kaggle
+
+
+## Configuration Optimisée pour Kaggle
+
+### Paramètres recommandés pour Kaggle
+```python
+# Configuration optimisée pour GPU Kaggle
+batch_size = 16          # Optimisé pour T4
+num_epochs = 100         # Limité par le temps
+lr_initial = 2e-4        # Taux d'apprentissage
+train_ps = 256           # Taille des patches
+val_ps = 256             # Taille de validation
+
+# Configuration GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.cuda.device_count() > 1:
+    model = torch.nn.DataParallel(model)
+```
+
+### Optimisation mémoire Kaggle
+```python
+# Paramètres pour éviter les erreurs de mémoire
+torch.backends.cudnn.benchmark = True
+torch.backends.cudnn.deterministic = False
+
+# Nettoyage mémoire
+torch.cuda.empty_cache()
+
+# Monitoring GPU
+print(f"GPU utilisé: {torch.cuda.get_device_name(0)}")
+print(f"Mémoire GPU: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+```
+
